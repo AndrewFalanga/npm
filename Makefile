@@ -6,9 +6,13 @@ VPATH = $(SRC_DIR)
 
 .PHONY: debug release tss clean
 
+# In the below, I am purposefully using make instead of $(MAKE) as the intention is for
+# a completely new instance of make to perform the build.
+
 all: npm
 npm:
-	@echo This will eventually be the build for the Networked Power Monitor
+	@echo Building in src
+	make -C src
 
 clean:
 	@echo Cleaning up the build cruft
