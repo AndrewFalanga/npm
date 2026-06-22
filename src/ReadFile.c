@@ -17,15 +17,16 @@
  */
 int ReadFile(const char* file, void **contents, uint32_t *size)
 {
-    int ret = -EINVAL;
+    int ret = EINVAL;
     FILE *fin = NULL;
     uint8_t *tContents = NULL;
 
-    if (file && contents && !*contents && size && *size > 0 && *size < MAX_FILE_SIZE)
+    if (file && contents && !*contents && size)
     {
         fin = fopen(file, "rb");
         if (!fin)
         {
+            ret = errno;
             goto exit_ReadFile;
         }
 
@@ -37,10 +38,16 @@ int ReadFile(const char* file, void **contents, uint32_t *size)
             goto exit_ReadFile;
         }
 
+        /* Only support files of modest size. */
+        if (fileInfo.st_size > MAX_FILE_SIZE)
+        {
+            goto exit_ReadFile;
+        }
+
         tContents = malloc(fileInfo.st_size);
         if (!tContents)
         {
-            ret = -ENOMEM;
+            ret = ENOMEM;
             goto exit_ReadFile;
         }
 
@@ -58,7 +65,7 @@ int ReadFile(const char* file, void **contents, uint32_t *size)
             free(tContents);
             if (feof(fin))
             {
-                ret = -EBADF;
+                ret = EBADF;
             }
             else
             {

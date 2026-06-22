@@ -1,0 +1,2 @@
+This file is meant for testing the
+ReadFile function in Google Test.

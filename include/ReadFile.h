@@ -5,6 +5,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Read the contents of a file into allocated memory
  *
@@ -25,5 +29,9 @@
  * @return ERRNO values as returned from library and system calls
  */
 int ReadFile(const char* file, void **contents, uint32_t *size);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
