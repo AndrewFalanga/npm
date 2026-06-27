@@ -24,10 +24,10 @@ jobs:
       run: make
     - name: Pre-Test Install Google Test
       run: sudo apt-get install libgtest-dev
-    - name: Test Linux
-      run:  |
-        make tests V=1
-        make runtests
+    - name: Build Tests
+      run:  make tests
+    - name: Run Tests
+      run: make runtests
 #    - name: make distcheck
 #      run: make distcheck
 
@@ -41,9 +41,13 @@ jobs:
 #      run: ./configure
     - name: Main Build MacOS
       run: make
-    - name: Test MacOS
+    - name: Configure Google Test
       run: |
-        make tests V=1
-        make runtests
+        brew update
+        brew install googletest
+    - name: Build Tests
+      run: make tests
+    - name: Run Tests
+      run: make runtests
 #    - name: make distcheck
 #      run: make distcheck

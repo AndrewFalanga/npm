@@ -2,6 +2,7 @@ ROOT_DIR := $(realpath ../..)
 TEST_BUILD := $(CURDIR)/build
 
 INCLUDE_DIR := $(ROOT_DIR)/include
+OS_NAME := $(shell uname)
 
 # Colorize output
 OBJ_COLOR := \e[0;34m
@@ -14,10 +15,11 @@ TEST_FILE_SRC := test.file.txt
 TEST_FILE_NAME = $(TEST_BUILD)/$(TEST_FILE_SRC)
 TEST_TEXT_HEADER = $(TEST_BUILD)/test_file.h
 
-# TODO need some way of grabbing the Google Test include dir that isn't bound to
-# MacOS and homebrew
-GTEST_ROOT ?= /opt/homebrew/Cellar/googletest/1.17.0
+ifeq ($(OS_NAME),Darwin)
+GTEST_ROOT = /opt/homebrew/Cellar/googletest/1.17.0
 INCLUDE_DIR += $(GTEST_ROOT)/include
+endif
+
 INCLUDE_DIR += $(TEST_BUILD)
 
 TEST_SRCS := test_ReadFile.cpp
