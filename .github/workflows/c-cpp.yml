@@ -22,6 +22,8 @@ jobs:
 #      run: ./configure
     - name: Main Build Linux
       run: make
+    - name: Pre-Test Install Google Test
+      run: sudo apt-get install libgtest-dev
     - name: Test Linux
       run:  |
         make tests V=1
