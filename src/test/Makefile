@@ -16,7 +16,8 @@ TEST_FILE_NAME = $(TEST_BUILD)/$(TEST_FILE_SRC)
 TEST_TEXT_HEADER = $(TEST_BUILD)/test_file.h
 
 ifeq ($(OS_NAME),Darwin)
-GTEST_ROOT = /opt/homebrew/Cellar/googletest/1.17.0
+GTEST_VERSION = $(shell brew info googletest | perl -ne 'print "$$1" if /stable (\d{1,}\.\d{1,}\.\d{1,})/')
+GTEST_ROOT = /opt/homebrew/Cellar/googletest/$(GTEST_VERSION)
 INCLUDE_DIR += $(GTEST_ROOT)/include
 endif
 
