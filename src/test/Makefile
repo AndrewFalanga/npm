@@ -29,7 +29,7 @@ OBJS := $(TEST_SRCS:%.cpp=$(TEST_BUILD)/%.o)
 OBJS += $(SRCS:%.c=$(TEST_BUILD)/%.o)
 
 CPPFLAGS += $(addprefix -I,$(INCLUDE_DIR))
-CPPFLAGS += -DPOSIX_SOURCE=
+CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 CXXFLAGS += -std=c++17
 
 TEST_BIN := $(TEST_BUILD)/gtest

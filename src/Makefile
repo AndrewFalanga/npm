@@ -3,7 +3,7 @@ BUILD_DIR := $(BASE_DIR)/build
 
 CFLAGS := -Wall -Werror -std=c11
 CPPFLAGS := -I$(BASE_DIR)/include
-CPPFLAGS += -DPOSIX_SOURCE=
+CPPFLAGS += -D_POSIX_C_SOURCE=200809L
 
 # Sources stored in _this_ directory
 SRCS := ReadFile.c

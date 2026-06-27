@@ -24,7 +24,7 @@ jobs:
       run: make
     - name: Test Linux
       run:  |
-        make tests
+        make tests V=1
         make runtests
 #    - name: make distcheck
 #      run: make distcheck
@@ -41,7 +41,7 @@ jobs:
       run: make
     - name: Test MacOS
       run: |
-        make tests
+        make tests V=1
         make runtests
 #    - name: make distcheck
 #      run: make distcheck
