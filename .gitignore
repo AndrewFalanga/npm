@@ -4,3 +4,5 @@ tss
 tssd
 build
 .$*drawio*.bkp
+compile_commands.json
+.cache
