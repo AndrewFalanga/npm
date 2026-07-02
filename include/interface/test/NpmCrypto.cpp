@@ -9,11 +9,11 @@ extern uint32_t eccPrivateSize;
 extern uint8_t *eccPublic;
 extern uint32_t eccPublicSize;
 
-extern char *dataToSign;
+extern uint8_t *dataToSign;
 extern uint32_t dataSize;
 
 /* being outside of a function, this is initialized to NULL */
-static char *signature;
+static uint8_t *priorSignature;
 
 /*
  * This provides a suite of tests which will work with an NpmCrypto object.
@@ -24,6 +24,7 @@ static char *signature;
 TEST(NpmCrypto, TestSign)
 {
     int err;
+    uint8_t *signature;
 
     /* First, test function parameter handling */
     err = NpmSign(nullptr, nullptr, 0, nullptr);
@@ -36,7 +37,7 @@ TEST(NpmCrypto, TestSign)
     ASSERT_EQ(err, EINVAL);
 
     /* Second, test the signing function */
-    err - NpmSign(ci, dataToSign, dataSize, &signature);
+    err = NpmSign(ci, dataToSign, dataSize, &signature);
     ASSERT_EQ(err, 0);
     ASSERT_NE(signature, nullptr);
     ASSERT_EQ(signature[0], 0x30); // DER the signature is always a generated sequence
@@ -50,7 +51,7 @@ TEST(NpmCrypto, TestVerify)
 {
     int err;
 
-    ASSERT_NE(signature, nullptr);
+    ASSERT_NE(priorSignature, nullptr);
     /* First, test function parameter handling */
     err = NpmVerify(nullptr, nullptr, 0, nullptr);
     ASSERT_EQ(err, EINVAL);
@@ -62,7 +63,7 @@ TEST(NpmCrypto, TestVerify)
     ASSERT_EQ(err, EINVAL);
 
     /* Second, test the signing function */
-    err - NpmVerify(ci, dataToSign, dataSize, signature);
+    err = NpmVerify(ci, dataToSign, dataSize, priorSignature);
     ASSERT_EQ(err, 0);
 
 }

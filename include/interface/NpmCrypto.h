@@ -7,8 +7,8 @@
 #include <stdint.h>
 
 struct _NpmCrypto {
-    int (*Sign)(struct _NpmCrypto*, const uint8_t*, uint32_t, uint8_t[104]);
-    int (*Verify)(struct _NpmCrypto*, const uint8_t*, uint32_t, const uint8_t[104]);
+    int (*Sign)(struct _NpmCrypto*, const uint8_t*, uint32_t, uint8_t**);
+    int (*Verify)(struct _NpmCrypto*, const uint8_t*, uint32_t, const uint8_t*);
     void (*Clean)(void);
 };
 
@@ -36,7 +36,7 @@ void DestroyCrypto(NpmCrypto**);
  * @return EINVAL cr or data are NULL; or dataLength is 0
  * @return ERRNO, or other codes, from underlying crypto implementation
  */
-static int NpmSign(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, uint8_t signature[104])
+static int NpmSign(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, uint8_t **signature)
 {
     if (cr) return cr->Sign(cr, data, dataLength, signature);
     else return EINVAL;
@@ -55,7 +55,7 @@ static int NpmSign(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, uint
  * @return EINVAL cr or data are NULL; dataLength is 0
  * @return ERRNO or other errors from cryptographic implementation
  */
-static int NpmVerify(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, const uint8_t signature[104])
+static int NpmVerify(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, const uint8_t *signature)
 {
     if (cr) return cr->Verify(cr, data, dataLength, signature);
     else return EINVAL;
