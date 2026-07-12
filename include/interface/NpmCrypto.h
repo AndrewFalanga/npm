@@ -7,8 +7,8 @@
 #include <stdint.h>
 
 struct _NpmCrypto {
-    int (*Sign)(struct _NpmCrypto*, const uint8_t*, uint32_t, uint8_t[104]);
-    int (*Verify)(struct _NpmCrypto*, const uint8_t*, uint32_t, const uint8_t[104]);
+    int (*Sign)(struct _NpmCrypto*, const uint8_t*, uint32_t, uint8_t**);
+    int (*Verify)(struct _NpmCrypto*, const uint8_t*, uint32_t, const uint8_t*);
     void (*Clean)(void);
 };
 
@@ -27,15 +27,16 @@ void DestroyCrypto(NpmCrypto**);
  * @param cr The NpmCrypto object owning the keys
  * @param data The data buffer to sign
  * @param dataLength The length of the data in bytes
- * @param signature The array into which the DER formatted ECC signature will be
- * placed. The array is 104 bytes in length to accommodate the DER structure and
- * the (r,s) points of the signature. It may be less but will be no more.
+ * @param signature A pointer to a pointer that will be allocated for the
+ * signature. The caller is responsible for freeing this memory. Signatures
+ * should be in DER format will will include the size so a size parameter is not
+ * included.
  *
  * @return 0 Success
  * @return EINVAL cr or data are NULL; or dataLength is 0
  * @return ERRNO, or other codes, from underlying crypto implementation
  */
-static int NpmSign(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, uint8_t signature[104])
+static int NpmSign(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, uint8_t **signature)
 {
     if (cr) return cr->Sign(cr, data, dataLength, signature);
     else return EINVAL;
@@ -48,14 +49,13 @@ static int NpmSign(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, uint
  * @param cr The NpmCrypto object owning the keys
  * @param data The data to verify
  * @param dataLength The length of the data in bytes
- * @param signature The DER formatted signature expected from the data using ECC
- * P-384 and SHA384
+ * @param A pointer to the signature memory which should be in DER format.
  *
  * @return 0 Success (or authentic)
  * @return EINVAL cr or data are NULL; dataLength is 0
  * @return ERRNO or other errors from cryptographic implementation
  */
-static int NpmVerify(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, const uint8_t signature[104])
+static int NpmVerify(NpmCrypto* cr, const uint8_t* data, uint32_t dataLength, const uint8_t *signature)
 {
     if (cr) return cr->Verify(cr, data, dataLength, signature);
     else return EINVAL;

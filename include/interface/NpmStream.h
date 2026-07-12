@@ -1,5 +1,4 @@
 
-
 #ifndef _NPM_STREAM_H_
 #define _NPM_STREAM_H_
 
@@ -30,7 +29,7 @@ void DestroyNpmStream(NpmStream** st);
  * @return EINVAL st or data are NULL or dataLength is 0
  * @return ERRNO from implementation
  */
-static int SendToStream(NpmStream *st, uint8_t *data, uint32_t dataLength)
+static int NpmSend(NpmStream *st, uint8_t *data, uint32_t dataLength)
 {
     if (st) return st->Send(st, data, dataLength);
     else return EINVAL;
@@ -48,7 +47,7 @@ static int SendToStream(NpmStream *st, uint8_t *data, uint32_t dataLength)
  * @return EINVAL st or data are NULL; dataLength is NULL
  * @return ERRNO from underlying OS or libraries
  */
-static int RecvFromStream(NpmStream *st, uint8_t *data, uint32_t *dataLength)
+static int NpmRecv(NpmStream *st, uint8_t *data, uint32_t *dataLength)
 {
     if (st) return st->Recv(st, data, dataLength);
     else return EINVAL;
