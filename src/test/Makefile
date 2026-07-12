@@ -1,15 +1,11 @@
 ROOT_DIR := $(realpath ../..)
 TEST_BUILD := $(CURDIR)/build
+RESOURCES_DIR := $(ROOT_DIR)/resources
 
 INCLUDE_DIR := $(ROOT_DIR)/include
 OS_NAME := $(shell uname)
 
-# Colorize output
-OBJ_COLOR := \e[0;34m
-BIN_COLOR := \e[0;32m
-ERR_COLOR := \e[0;31m
-SRC_COLOR := \e[0;36m
-NO_COLOR := \e[0m
+-include $(RESOURCES_DIR)/colors.mk
 
 TEST_FILE_SRC := test.file.txt
 TEST_FILE_NAME = $(TEST_BUILD)/$(TEST_FILE_SRC)
